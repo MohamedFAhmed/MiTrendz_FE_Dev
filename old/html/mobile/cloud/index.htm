@@ -1,0 +1,537 @@
+﻿<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gte IE 9]>
+  <style type="text/css">
+    .gradient {
+       filter: none;
+    }
+  </style>
+<![endif]-->
+<!--[if gt IE 8]><!--> 
+<html lang="en"> <!--<![endif]-->
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+	<title></title>
+	<meta name="description" content="MiTrendz - Visualizing Trendz in your social network">
+	<meta name="author" content="MiTrendz - Creative team">
+
+
+	<meta name="viewport" content="width=device-width">
+	<link rel="stylesheet/less"  href="../../css/mobile/style.less" type="text/css">
+
+    <script src="../../js/utils/utils.js"></script>
+	
+<!--	<link rel="stylesheet/less"  href="../../desktop/css/FriendPhoto.less" >
+	<link rel="stylesheet/less"  href="../../desktop/css/SharedMedia.less">-->
+    
+    
+    <script src="../../js/libs/common/less-1.3.0.min.js" type="text/javascript"></script>
+    <script src="../../js/libs/common/modernizr-2.5.3-respond-1.1.0.min.js"></script>
+    <script src="../../js/libs/common/kinetic-v3.9.6.js"></script>
+    <script src="../../js/libs/jquery/desktop/jquery-1.7.2.min.js"></script>
+    <script src="../../js/libs/jquery/mobile/jquery.mobile-1.1.0.min.js"></script>
+    <script src="../../js/libs/jquery.lazyload(instance).js" ></script>
+    <script src="../../js/libs/common/d3.js" type="text/javascript"></script>
+    <script src="../../js/libs/common/d3.layout.cloud.js" type="text/javascript"></script>
+    <script src="../../js/libs/common/mustache.js" type="text/javascript"></script>
+    <!--<script src="../../js/controls/common/friendimg.js" type="text/javascript"></script>
+	<script src="../../js/controls/common/PhotosViewer.js" type="text/javascript"></script>-->
+    
+    <script src="../../desktop/../js/libs/jquery/desktop/ui/jquery.bgiframe-2.1.2.js"></script>
+	<script src="../../desktop/../js/libs/jquery/desktop/ui/jquery.ui.core.min.js"></script>
+	<script src="../../desktop/../js/libs/jquery/desktop/ui/jquery.ui.widget.min.js"></script>
+	<script src="../../desktop/../js/libs/jquery/desktop/ui/jquery.ui.mouse.min.js"></script>
+	<script src="../../desktop/../js/libs/jquery/desktop/ui/jquery.ui.draggable.min.js"></script>
+	<script src="../../desktop/../js/libs/jquery/desktop/ui/jquery.ui.position.min.js"></script>
+	<script src="../../desktop/../js/libs/jquery/desktop/ui/jquery.ui.resizable.min.js"></script>
+	<script src="../../desktop/../js/libs/jquery/desktop/ui/jquery.ui.dialog.min.js"></script>
+
+	<script type="text/javascript">
+	    ////////// GLOBAL VARIABLES //////////////
+	    var CloudInfo = null;
+	    var CloudCanvas = null;
+	    var SharedPhotosViewer = null;
+	    var SharedVideosViewer = null;
+	    var SelectedNetwork = 'Facebook';
+	    var HighlightedKws = [];
+	    var CloudFrozen = false;
+	    var FriendsPicManager = null;
+	    ////////// END OF GLOBAL VARIABLES //////////////
+	    //Document Ready Steps:
+	    //1- Get the cloud for the specified date
+	    //2- Show the busy indicator
+	    //3- Visualize Cloud data
+	    //  A- Place keywords on the canvas, which requires: keeping a handle for, reference the tag element
+	    //      1- We have the x & y set from the server
+	    //      2- We'll just place them in the canvas as stated by the server by applying: font size, type, rotation.
+	    //      3- Add an event handler to handle mouse over (or click in case of mobile devices).
+	    //  B- Place videos at the right side
+	    //  C- Place photos at the left side 
+	    //  D- Update the cloud info call out.
+	    $(document).ready(function () {
+	        setPageElementsDimensions();
+	        $.mobile.hidePageLoadingMsg();
+	        $.mobile.loadingMessage = false;
+	        $.mobile.loadingMessageTextVisible = false;
+	        var now = new Date();
+	        var userId = GetQueryStringParams('uid');
+	        if (userId == null) {
+	            userId = 7;
+	        }
+	        var startTime = new Date();
+	        startTime = startTime.setDate(now.getDate() - 1);
+	        GetCloud(dateFormat(startTime, "isoDateTime"), dateFormat(now, "isoDateTime"), userId, 'facebook', 20);
+	        FriendsPicManager = new FriendsPicturesManager('CloudContainer');
+
+	    });
+
+	    function setPageElementsDimensions() {
+	        var windowHeight = $(document).height();
+	        windowHeight -= 30 + 50;
+	        $('#PhotosViewer,#PhotosContainer,#CloudContainer,#VideosContainer,#VideosViewer').css('height', windowHeight);
+
+	    }
+	    //Calls the server to get user's cloud
+	    function GetCloud(startTime, endTime, userId, networks, maxwords) {
+
+	        $.mobile.hidePageLoadingMsg();
+	        var qString = 'StartTime=' + startTime + '&EndTime=' + endTime + '&MaxWordsNum=' + maxwords + '&UserId=' + userId + '&CombinedResults=false&SortByAltWeight=false&callback=?';
+	        $.getJSON('http://98.225.46.100:20000/api/WebApis/GetUserCloud', qString, CloudDataReceived).error(onCloudRetreivalError);
+	    }
+	    //Get called when cloud retrieved successfuly from the server
+	    function CloudDataReceived(cloud) {
+	        $.mobile.hidePageLoadingMsg();
+	        CloudInfo = cloud;
+	        //VisualizeCloud(CloudInfo.Facebook.Tags);
+
+	        //VisualizeVideos();
+	        //VisualizePictures();
+	        d3Cloud(CloudInfo.Facebook.Tags);
+
+	        //	        $(document).click(function (event) {
+	        //	            ResetCloud();
+	        //	            return false;
+
+	        //	        });
+	    }
+	    //Set's the interface when the cloud is basically with no keywords
+	    //However, we may still have keywords and videos to display.
+	    function DisplayEmptyCloud(cloud) {
+	    }
+	    //informs the user that something went wrong
+	    function onCloudRetreivalError(error)
+	    { }
+	    function MouseClickAnywhere() {
+	        if (CloudFrozen) {
+	            ToggleCloudFreez();
+	            ResetCloud();
+	        }
+	    }
+	    //CLOUD VISUALIZATION
+	    //Let's experiment with d3.layout.cloud
+	    function d3Cloud(Tags) {
+	        //Let's first get their font size
+	        getFontSize(Tags);
+	        d3.layout.cloud().size([parseInt($('#' + "CloudContainer").css('width')), parseInt($('#' + "CloudContainer").css('height'))])
+      .words(Tags.map(function (Tag) {
+          return { text: Tag.Keyword, size: Tag.FontSize }; //10 + Math.random() * 20 
+      }))
+      .rotate(function () { return 0; }) //~~(Math.random() * 2) * 90; 
+	  .font("Arial")
+	  .padding(20)
+      .fontSize(function (d) { return d.size; })
+      .on("end", drawD3Tags)
+      .start();
+	    }
+	    function getFontSize(Tags) {
+	        var maxNum = Tags.length;
+	        var minFont = 10;
+	        var fontIncrement = 5;
+	        for (var i = 0; i < maxNum; i++) {
+	            Tags[i].FontSize = (fontIncrement * Tags[i].FontSizeBucket) + minFont;
+	        }
+	    }
+	    function drawD3Tags(Tags) {
+	        CloudCanvas = new Kinetic.Stage({
+	            container: "CloudContainer",
+	            width: parseInt($('#' + "CloudContainer").css('width')),
+	            height: parseInt($('#' + "CloudContainer").css('height'))
+	        });
+	        for (var i = 0; i < Tags.length; i++) {
+	            var keyword = Tags[i];
+
+	            var tagText = new Kinetic.Text({
+	                x: keyword.x + (CloudCanvas.getWidth() / 2),
+	                y: keyword.y + (CloudCanvas.getHeight() / 2),
+	                text: keyword.text,
+	                fontSize: keyword.size,
+	                fontFamily: "Arial",
+	                textFill: "black",
+	                draggable: true,
+	                align: "center",
+	                rotationDeg: keyword.rotate,
+	                verticalAlign: "middle",
+	                id: keyword.text,
+	                name: keyword.text
+	            });
+	            tagText.origColor = 'black';
+	            tagText.tagElement = getTagElement(keyword.text);
+	            if (Modernizr.touch) {
+	                tagText.on("touchstart", TouchedTag);
+	            }
+	            else {
+	                tagText.on("mouseover", MouseOverTag);
+	                tagText.on("mouseout", MouseLeaveTag);
+	                tagText.on("click", MouseClickTag);
+	            }
+
+
+
+
+	            var layer = new Kinetic.Layer();
+	            layer.add(tagText);
+
+	            CloudCanvas.add(layer);
+	            layer.draw();
+
+	        }
+	    }
+	    function getTagElement(keyword) {
+	        var maxNum = CloudInfo.Facebook.Tags.length;
+	        for (var i = 0; i < maxNum; i += 1) {
+	            if (CloudInfo.Facebook.Tags[i].Keyword == keyword) {
+	                return CloudInfo.Facebook.Tags[i];
+	            }
+	        }
+	    }
+
+	    function ResetCloud() {
+	        //steps:
+	        //1- Remove Words highlighting
+	        //2- Remove frinds images
+	        //3- Reset pictures view
+	        //4- Reset Videos view.
+	        ResetHighlightedKws();
+
+	    }
+	    function TouchedTag(even) {
+	        ResetCloud();
+	       // FriendsPicManager.HideFriendsPictures();
+	        //ToggleCloudFreez();
+	        //MouseClickTag(event);
+	        MouseOverTag(event);
+	    }
+	    function MouseLeaveTag(event) {
+	        document.body.style.cursor = "default";
+	        if (CloudFrozen) {
+	            return;
+	        }
+	        ResetHighlightedKws();
+//	        FriendsPicManager.HideFriendsPictures();
+//	        SharedPhotosViewer.Reset();
+//	        SharedVideosViewer.Reset();
+
+	    }
+	    //Mouse click/down on 
+	    function MouseClickTag(event) {
+	        if (!ToggleCloudFreez()) {
+	            ResetCloud();
+	        }
+
+
+	        event.cancelBubble = true;
+	        event.stopPropagation();
+	        event.preventDefault();
+	        return false;
+	    }
+	    //toggles the cloud freeze flag 
+	    function ToggleCloudFreez() {
+	        if (CloudFrozen) {
+	            CloudFrozen = false;
+
+	        }
+	        else {
+	            CloudFrozen = true;
+	        }
+	        return CloudFrozen;
+	    }
+	    function MouseOverTag(event) {
+	        //Algorithm:
+	        //1- Find this keyword corresponding tag in the cloud structure.
+	        //2- Find all other tags linked to this one
+	        //3- Change the color of this keyword and other related.
+	        //4- Show friend's pictures with the summary.
+	        //5- Show all pictures.
+	        //$('#data').append(event.shape.attrs.x + '     ' + event.shape.attrs.y + '<br>');
+	        document.body.style.cursor = "pointer";
+	        if (CloudFrozen) {
+	            return;
+	        }
+
+	        var tagElement = event.shape.tagElement; // GetTag(event.shape.getName(), SelectedNetwork);
+	        var relatedkws = GetRelatedTextBoxes(tagElement);
+	        if (tagElement != null) {
+	            HighlightKeyword(event.shape.attrs.id, 'red');
+	        }
+	        for (var i = 0; i < relatedkws.length; i++) {
+	            HighlightKeyword(relatedkws[i], 'blue');
+	        }
+
+
+//	        ShowFrindsPhotos(tagElement);
+//	        ShowRelatedPictures(tagElement);
+//	        ShowRelatedVideos(tagElement);
+
+	    }
+	    function ShowRelatedPictures(tagElement) {
+	        SharedPhotosViewer.ShowRelatedPhotos(tagElement.PostsIds);
+	    }
+
+	    function ShowRelatedVideos(tagElement) {
+	        SharedVideosViewer.ShowRelatedPhotos(tagElement.PostsIds);
+	    }
+	    /////////////////START OF DATA STRUCTURE //////////////////////
+	    function Point(x, y) {
+	        this.x = x;
+	        this.y = y;
+	    }
+	    //////////END OF DATA STRUCTURES/////////////////////////
+
+
+	    //displaying friends photos caused a keyword to appear in the cloud.
+	    function ShowFrindsPhotos(tagElement) {
+	        //Let's find all friends caused this tag to appear.
+	        var friendsIds = new HashTable();
+	        var posts = tagElement.PostsIds;
+	        for (var i = 0; i < posts.length; i++) {
+	            var postStruct = CloudInfo.Facebook.SocialPosts[posts[i]];
+	            if (postStruct != null) {
+	                if (!friendsIds.hasItem(postStruct.FriendIDInNetwork)) {
+	                    friendsIds.setItem(postStruct.FriendIDInNetwork, postStruct.FriendIDInNetwork);
+	                }
+
+	            }
+	        }
+	        for (var key in friendsIds.items) {
+
+	            var startPoint = new Point(0, 0);
+	            var endPoint = new Point(100, 100);
+
+	            var friendInfo = CloudInfo.Facebook.Friends[key];
+	            var firstPostInfo = getFirstPost(friendInfo.Posts);
+	            FriendsPicManager.ShowFriendPicture(startPoint, endPoint, friendInfo, firstPostInfo);
+
+	        }
+	    }
+	    function getFirstPost(data) {
+	        for (var postId in data) {
+	            var postInfo = CloudInfo.Facebook.SocialPosts[postId];
+	            if (postInfo != null) {
+	                return postInfo;
+	            }
+
+	        }
+	        return null;
+	    }
+	    //get the corresponding tag of the passed keyword
+	    function GetTag(keyword, network) {
+	        for (var counter in CloudInfo.Facebook.Tags) {
+	            if (keyword == CloudInfo.Facebook.Tags[counter].Keyword) {
+	                return CloudInfo.Facebook.Tags[counter];
+	            }
+	        }
+
+	        return null;
+	    }
+	    //returns array of keywords related to the highlighted one.
+	    function GetRelatedTextBoxes(tagElement) {
+	        var relatedKeywords = [];
+	        for (var clusterkw in tagElement.ClusterKeywords) {
+	            var relkw = tagElement.ClusterKeywords[clusterkw];
+	            var textbox = CloudCanvas.ids[relkw.keyword];
+	            if (textbox != null) {
+	                relatedKeywords.push(textbox.attrs.id);
+	            }
+	        }
+	        return relatedKeywords;
+	    }
+	    function GetDisplayedTag(keyword) {
+	        for (var i in CloudInfo.Facebook.Tags) {
+	            if (CloudInfo.Facebook.Tags[i].Keyword == keyword) {
+	                return CloudInfo.Facebook.Tags[i];
+	            }
+	        }
+	    }
+	    //Highlights the keyword in the cloud
+	    function HighlightKeyword(cloudKeywordId, color) {
+	        var cloudKeyword = CloudCanvas.ids[cloudKeywordId];
+	        cloudKeyword.setTextFill(color);
+	        cloudKeyword.parent.draw();
+	        HighlightedKws.push(cloudKeyword);
+	    }
+	    //Returns keywords into their original colors
+	    function ResetHighlightedKws() {
+	        for (var i = 0; i < HighlightedKws.length; i++) {
+	            var highlightedkw = HighlightedKws[i];
+	            highlightedkw.setTextFill(highlightedkw.origColor);
+	            var layer = highlightedkw.parent;
+	            layer.draw();
+	        }
+	        HighlightedKws = [];
+	    }
+	    //place  initial pictures in the pictures view area
+	    function VisualizePictures() {
+	        SharedPhotosViewer = new PhotosViewer(CloudInfo.Facebook.SharedPhotos, CloudInfo.Facebook.Friends, 'PhotosViewer', 'PhotosContainer', MediaActivated, MediaDeActivated);
+	        SharedPhotosViewer.ShowMedia();
+	        var contrname = SharedPhotosViewer.contrName;
+	        var x = SharedPhotosViewer.getContainer();
+
+	    }
+	    //places initial videos in the videos view area
+	    function VisualizeVideos(videos) {
+	        SharedVideosViewer = new PhotosViewer(CloudInfo.Facebook.SharedVideos, CloudInfo.Facebook.Friends, 'VideosViewer', 'VideosContainer', MediaActivated, MediaDeActivated);
+	        SharedVideosViewer.ShowMedia();
+	        var containerName = SharedVideosViewer.contrName;
+	        var y = SharedVideosViewer.getContainer();
+
+	    }
+	    //updates the cloud info
+	    function UpdateCloudInfo(cloudInfo) { }
+
+
+	    //////////INTERACTION FUNCTIONS//////////////
+	    //Highlight related tags in the tags cloud
+	    function MediaActivated(postId) {
+	        //Let's get the id.
+	        var max = 0;
+	        //Let's find all related tags
+
+	        var relatedTags = GetRelatedTagsToPost(postId);
+	        max = relatedTags.length;
+	        for (var i = 0; i < max; i += 1) {
+	            HighlightKeyword(relatedTags[i], 'red');
+
+	        }
+	    }
+
+	    function MediaDeActivated(postId) {
+	        if (!CloudFrozen) {
+	            ResetHighlightedKws();
+	        }
+	    }
+
+	    function GetRelatedTagsToPost(postId) {
+	        var tagsNames = [];
+	        var maxNum = CloudInfo.Facebook.Tags.length;
+	        for (var i = 0; i < maxNum; i += 1) {
+	            var postsNum = CloudInfo.Facebook.Tags[i].PostsIds.length;
+	            for (var j = 0; j < postsNum; j += 1) {
+	                if (CloudInfo.Facebook.Tags[i].PostsIds[j] == postId) {
+	                    tagsNames.push(CloudInfo.Facebook.Tags[i].Keyword);
+	                }
+	            }
+	        }
+	        return tagsNames;
+
+	    };
+
+	    ///////////END OF INTERACTION function///////
+	</script>
+</head>
+<body > 
+<!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+
+	<div id="content-container">
+		<!--<div id="main" class="wrapper clearfix">-->
+						
+			<table style="width: 100%; height:100%; border-width: 2px;">
+				<tr>
+				    <td  colspan="3" >
+				        <div class="top-bar">
+				            <svg height="30px" width="30px">
+				                <path style="fill:rgb(255,255,255)" id="gear-2-icon" d="M311.546,256c0,30.628-24.918,55.546-55.546,55.546c-30.629,0-55.548-24.918-55.548-55.546
+	c0-30.629,24.919-55.547,55.548-55.547C286.628,200.453,311.546,225.371,311.546,256z M462,228.257v55.485l-29.963,10.655
+	c-11.449,4.071-20.643,12.796-25.297,24.021c-0.002,0.005-0.004,0.009-0.006,0.014c-4.653,11.218-4.328,23.908,0.886,34.877
+	l13.66,28.737l-39.234,39.234l-28.902-13.738c-10.884-5.174-23.451-5.491-34.578-0.863c-0.005,0.002-0.009,0.004-0.014,0.006
+	c-11.308,4.701-20.113,13.987-24.216,25.525L283.741,462h-55.484l-10.663-29.984c-4.068-11.438-12.784-20.621-23.998-25.271
+	c-0.004-0.002-0.009-0.004-0.014-0.006c-11.229-4.657-23.93-4.33-34.909,0.889l-28.721,13.652l-39.234-39.234l13.654-28.723
+	c5.222-10.985,5.548-23.67,0.888-34.906c-0.002-0.004-0.003-0.009-0.005-0.014c-4.647-11.206-13.844-19.935-25.274-24L50,283.742
+	v-55.485l29.982-10.662c11.438-4.067,20.622-12.784,25.271-23.998c0.002-0.004,0.004-0.009,0.006-0.013
+	c4.656-11.229,4.33-23.931-0.889-34.91l-13.653-28.721l39.234-39.234l28.723,13.653c10.986,5.222,23.67,5.548,34.905,0.889
+	c0.005-0.001,0.009-0.003,0.014-0.005c11.207-4.646,19.936-13.843,24.001-25.274L228.257,50h55.484l10.663,29.982
+	c4.067,11.438,12.785,20.623,24,25.273c0.004,0.002,0.009,0.003,0.014,0.005c11.229,4.657,23.93,4.33,34.908-0.889l28.72-13.652
+	l39.234,39.234l-13.653,28.724c-5.222,10.985-5.548,23.668-0.889,34.903c0.002,0.004,0.004,0.009,0.006,0.013
+	c4.646,11.208,13.844,19.937,25.274,24.001L462,228.257z M351.546,256c0-52.685-42.861-95.547-95.546-95.547
+	c-52.686,0-95.548,42.862-95.548,95.547s42.862,95.546,95.548,95.546C308.685,351.546,351.546,308.685,351.546,256z"/>
+				            </svg>
+				        </div>
+				    </td>
+                   
+                </tr>				
+				<tr>
+					<!--<td>
+		
+					    <div id="PhotosContainer" style=" position:relative;">
+					        <div id="PhotosViewer"></div>
+					    </div>
+					</td>-->
+					<td colspan="3">
+					    
+                <div id="CloudContainer" style=" position:relative;"></div>
+					    
+                        </td>
+					<!--<td>
+		
+					    <div id="VideosContainer" style=" position:relative;">
+					             <div id="VideosViewer"></div>
+					    </div>
+					</td>-->
+				</tr>
+			    <tr>
+			        <td colspan="3">
+			            
+			        </td>
+			    </tr>
+			</table>
+			
+			
+						
+		<!--</div> --><!-- #main -->
+	</div> <!-- #content-container -->
+
+<!--	<div id="footer-container">
+		<footer class="wrapper">
+		
+			<header class="wrapper clearfix">
+			<nav>
+				<ul>
+					<li><a href="#">About</a></li>
+					<li><a href="#">Our Team</a></li>
+					<li><a href="#">Terms of Use</a></li>
+				</ul>
+			</nav>
+		</header>
+
+		</footer>
+	</div>-->
+
+
+<!--<!-- scripts concatenated and minified via ant build script-->
+<!-- end scripts-->
+
+<!--<script>
+    var _gaq = [['_setAccount', 'UA-XXXXX-X'], ['_trackPageview']];
+    (function (d, t) {
+        var g = d.createElement(t), s = d.getElementsByTagName(t)[0];
+        g.src = ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js';
+        s.parentNode.insertBefore(g, s)
+    } (document, 'script'));
+</script>-->
+
+</body>
+</html>

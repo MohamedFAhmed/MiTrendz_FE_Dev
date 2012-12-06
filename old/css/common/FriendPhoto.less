@@ -1,0 +1,109 @@
+﻿@import "common.less";
+
+@ContainerBackground :  rgba(0, 0, 0, .7);
+@TextFont : Arial;
+@TextColor: White;
+@ControlWidth : 120px;
+@ControlHeight: 60px;
+
+
+
+
+.friendPhotoContainer {
+position: absolute;
+opacity: 1;
+ width: @ControlWidth;
+ height: @ControlHeight; 
+}
+
+.innerContainer
+{
+position: relative;
+ width: @ControlWidth;
+    height: @ControlHeight;
+    background: @ContainerBackground;
+	border-style:solid;
+	.rounded-corners(3px, 1px, White);
+	.box-shadow(0px, 0px, 7px, rgba(0,0,0,0.7));
+
+}
+
+
+
+
+.imgContainerLeft{
+	position: absolute;
+	left:@Margin;
+	top: @Margin;
+    background-color: transparent;
+    width: @FriendImageWidth;
+    height: @ControlHeight - (@Margin*2);
+
+}
+
+.imgContainerRight{
+	position: absolute;
+	right:@Margin;
+	top: @Margin;
+    background-color: transparent;
+    width: @FriendImageWidth;
+    height: @ControlHeight - (@Margin*2);
+
+}
+
+
+
+.friendname{
+position: relative;
+left:@Margin;
+padding: 0;
+background:black;
+background-color: Black;
+overflow: hidden;
+width: @FriendImageWidth;
+height: 15px;
+//height: @ControlHeight - @FriendImageHeight - (@Margin*2);
+margin:0px;
+vertical-align: middle;
+
+}
+
+.friendnametext{
+overflow: hidden;
+vertical-align: middle;
+text-overflow: ellipsis;
+-o-text-overflow: ellipsis;
+white-space: nowrap;
+width: @FriendImageWidth;
+line-height: 15px;
+text-wrap: none;
+.font(8px, @TextFont, @TextColor);
+text-align: center;
+}
+
+
+.postsSummaryContainerLeft{
+position: absolute;
+left: @FriendImageWidth + (@Margin * 3);
+top: @Margin;
+width: @ControlWidth - @FriendImageWidth - (@Margin *5);
+height: @ControlHeight - (@Margin* 2);
+}
+
+.postsSummaryContainerRight{
+position: absolute;
+right: @FriendImageWidth + (@Margin * 3);
+top: @Margin;
+width: @ControlWidth - @FriendImageWidth - (@Margin *5);
+height: @ControlHeight - (@Margin* 2);
+}
+
+.posttime{
+.postsSummaryText(80px, White, 8px, "Arial");
+}
+.postsSummary{
+
+.postsSummaryText(80px, White, 10px, "Arial");
+}
+
+

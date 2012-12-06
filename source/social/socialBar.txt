@@ -1,0 +1,51 @@
+enyo.kind({
+	name: "MiTrendz.AddComment",
+	kind: "Control",
+	tag: "div",
+	fit: true,
+	allowHTML: true, 
+	classes: "addComment",	
+	//style : "display:inline;",
+    handlers: {
+        ondown: "downHandler",
+        onup: "upHandler"
+    },
+	components : [
+		{content: "Add your comment"},
+		{tag: "br"},
+		{kind: "onyx.InputDecorator", style:"width:90%; margin: 5px;", components: [
+				{kind: "onyx.TextArea", style:"width:100%;", placeholder: "Enter comment here", onchange:"inputChanged"}
+		]},
+		{tag : "hr", style:"margin:3px; width: 90%; border:1px; color:rgba(0,0,0,0.5);"},
+		{kind: "onyx.InputDecorator", style:"width:90%; margin: 5px;", components: [
+			{kind: "onyx.TextArea", style:"width:100%;" ,placeholder: "Tag it! Type and separate them with comma, or select from below", onchange:"inputChanged"}
+		]},
+		{content: "Suggested Tags"},
+		{kind: "Scroller",   vertical:"auto", horizontal:"hidden", classes: "", style: "height:55px; width:95%;", components: [
+			{kind:"enyo.Repeater", style:"width:95%;", count : 5, components :[
+				{kind:"Image", classes:"", src: "assets/tags.png", style: "white-space: nowrap; margin-left: 5px; width:22px; height:22px;" },
+				{content:"keyword", style:"display:inline; color:rbga(0,0,0,0.6); white-space: nowrap; margin-left: 5px;"}
+			]}
+		]},
+		{tag: "br"},
+		{kind:"onyx.Button", content: "Comment", style:"text-align: center; margin: 10px; margin-left: auto; margin-right: auto;", ontap:"CommentTapped"}
+	],
+    create: function() {
+        this.inherited(arguments);
+		//this.$.cloudLoadingSpinner.show();
+    },
+	
+	
+	render: function(){
+		this.inherited(arguments);
+		//this.$.cloudLoadingSpinner.show();
+	},
+	rendered : function(){
+	this.inherited(arguments);
+
+	},
+	addGoBackTapped : function(){
+	
+	}
+	
+});

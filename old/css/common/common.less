@@ -1,0 +1,78 @@
+﻿
+@FriendImageHeight: 30px;
+@FriendImageWidth: 30px;
+@FriendImageResizer : 2;
+@Margin : 2px;
+.friendimg{
+	position: relative;
+    background-color: transparent;
+    border-color:  white;
+	border-style:solid;
+    border-width: 1px;
+    vertical-align: top;
+    horiz-align: center;
+    width: @FriendImageWidth;
+    height: @FriendImageHeight;
+	margin: @Margin;
+}
+
+
+.SmallFriendImg{
+	position: relative;
+    background-color: transparent;
+    border-color:  white;
+	border-style:solid;
+    border-width: 1px;
+    vertical-align: top;
+    horiz-align: center;
+    width: @FriendImageWidth;
+    height: @FriendImageHeight;
+	margin: @Margin/2;
+}
+
+.box-shadow (@x: 0, @y: 0, @blur: 1px, @color: #000) {
+  box-shadow: @arguments;
+  -moz-box-shadow: @arguments;
+  -webkit-box-shadow: @arguments;
+}
+
+.rounded-corners (@radius: 5px, @width: 1px, @color: #FFFFFF) {
+  border-radius: @radius;
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+  border-color: @color;
+  border-width: @width;
+}
+
+.font(@size:10px, @type: Arial, @color: White){
+color:@color; 
+font-size: @size;
+font-family: @type;
+
+
+}
+
+
+.postsSummaryText (@Width: auto, @TextColor: White, @FontSize: 10px, @FontFamily: "Arial") {
+
+    background-color: transparent;  
+	font-family: @FontFamily;
+	font-size: @FontSize;
+overflow: hidden;
+text-overflow: ellipsis;
+-o-text-overflow: ellipsis;
+white-space: nowrap;
+width: @Width;
+color: @TextColor;
+	line-height: @FontSize + 2;
+}
+
+.postText (@TextColor: White, @FontSize: 10px, @FontFamily: "Arial") {
+
+    background-color: transparent;  
+	font-family: @FontFamily;
+	font-size: @FontSize;
+	white-space: wrap;
+	line-height: @FontSize + 2;
+	color: @TextColor;
+}

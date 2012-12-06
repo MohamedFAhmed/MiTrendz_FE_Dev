@@ -1,0 +1,83 @@
+﻿@import "common.less";
+
+
+
+//These are just temp dimensions for design purposes. They will be changed at runtime according to image size.
+@PhotoWidth: 200px;
+@PhotoHeight: 200px;
+@InfoContHeight : @PhotoHeight/3;
+body {
+}
+
+
+
+
+.SharedMediaContainer{
+position: absolute;
+height: @PhotoHeight;
+width: @PhotoWidth;
+.rounded-corners (1px,1px, rgba(0,0,0,0.5));
+.box-shadow(0px, 0px, 7px, rgba(0,0,0,0.7));
+  -webkit-transform: translateZ(0);
+}
+.PhotoContainer{
+position: relative;
+  -webkit-transform: translateZ(0);
+ }
+
+.SharedImage{
+position: absolute;
+left: 0px;
+top: 0px;
+height: @PhotoHeight;
+width: @PhotoWidth;
+overflow: hidden;
+  -webkit-transform: translateZ(0);
+}
+
+.InfoContainer{
+position: absolute;
+bottom: 0;
+background: rgba(0,0,0,0.3);
+background-color: rgba(0,0,0,0.3);
+height: 60px;
+width : @PhotoWidth;
+left: 0px;
+  -webkit-transform: translateZ(0);
+}
+
+.SharedMediaSummary{
+position: absolute;
+left: @FriendImageHeight + @Margin*3;
+top: @Margin + 15;
+.postsSummaryText(100px, White, 10px, "Arial");
+  -webkit-transform: translateZ(0);
+}
+
+.FriendName{
+position: absolute;
+left: @FriendImageHeight + @Margin*3;
+top: @Margin;
+.postsSummaryText(100px, White, 10px, "Arial");
+  -webkit-transform: translateZ(0);
+}
+
+.SharedMediaTime{
+position: absolute;
+bottom: 3;
+left: 0 ;
+.postsSummaryText(100px, White, 8px, "Arial");
+  -webkit-transform: translateZ(0);
+}
+
+.ViewerInfoDiv{
+width : 200px;
+text-align: center;
+color: white;
+height: 20px;
+background: rgba(0,0,0,0.7);
+position: fixed;
+bottom: 0;
+opacity: 1;
+z-index: 100000;
+}

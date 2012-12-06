@@ -1,0 +1,11 @@
+enyo.depends(
+	"social.css",
+	"trendingPhoto.js",
+	"friendImage.js",
+	"friend_comment.js",
+	"friend_like.js",
+	"tag.js",
+	"socialBar.js",
+	"postShare.js",
+	"addComment.js"
+);

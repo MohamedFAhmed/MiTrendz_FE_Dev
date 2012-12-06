@@ -1,0 +1,43 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gte IE 9]>
+  <style type="text/css">
+    .gradient {
+       filter: none;
+    }
+  .auto-style1 {
+	  direction: ltr;
+  }
+  </style>
+<![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+
+<head>
+	<script src="js/libs/jquery/desktop/jquery-1.7.2.min.js"></script>
+    <script src="js/libs/common/detectbrowser.js"></script>
+    
+     <script type="text/javascript" src="cordova-2.0.0.js"></script>
+    <script src="js/Cordova/index.js"></script>
+    <script type="text/javascript">
+        app.initialize();
+        window.location = 'html/slates/index.htm';        
+        $(document).ready(function () {
+
+            if (!detectMobileAndRedirect(navigator.userAgent || navigator.vendor || window.opera, 'html/mobile/index.htm')) {
+                if (!detectiPadAndRedirect('html/slates/cloud/index.htm')) {
+                    //if none of these, let's direct to the desktop version
+                    window.location = 'html/slates/cloud/index.htm';        
+                }
+            }
+            
+        });
+    </script>
+</head>
+<body>
+<!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+
+	
+</body>
+</html>

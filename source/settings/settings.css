@@ -1,0 +1,23 @@
+
+
+.settingsPopup{
+height : 350px;
+width : 400px;
+background : rgba(0,0,0,0.9);
+border-color: white;
+border-style: solid;
+border-width: 1px;
+}
+
+.settingsColumn{
+margin-left : 5px;
+line-height:35px;
+display:inline-block;
+font-size : 16px;
+vertical-align: middle; 
+}
+
+.settings_input{
+margin: 5px;
+margin-left: 20px;
+}

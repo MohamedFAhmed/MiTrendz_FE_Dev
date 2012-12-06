@@ -1,0 +1,9 @@
+enyo.depends(
+	"reg_login.css",
+	"validation_result.js",
+	"reg.js",
+	"login.js",
+	"facebook_link.js",
+	"facebook_login.js",
+	"forgot_password.js"
+);

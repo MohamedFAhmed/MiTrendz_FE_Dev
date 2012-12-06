@@ -1,0 +1,101 @@
+﻿@import "common.less";
+
+
+@ContainerHeight : 100%;
+@ContainerWidth : 500px;
+@HandleHeight : 15%;
+@HandleWidth : 30px;
+
+
+.SideMediaViewContainerLeft{
+position:fixed;
+left:-(@ContainerWidth - @HandleWidth);
+top: 0;
+width: @ContainerWidth;
+height: @ContainerHeight;
+background: transparent;
+.rounded-corners (0px,0px, rgba(255,255,255,0));
+z-index: 100;
+}
+
+.SideMediaViewContainerRight{
+position:fixed;
+right:  -(@ContainerWidth - @HandleWidth);
+top: 0;
+width: @ContainerWidth;
+height: ;
+background: Transparent;
+
+z-index: 100;
+}
+
+.SideHandleLeft{
+position:absolute;
+top: (@ContainerHeight - @HandleHeight)/2;
+right: 0;
+width: @HandleWidth;
+height: @HandleHeight;
+background: rgba(0,0,0,0.8);
+.box-shadow (2px, 0px, 3px, #000);
+.rounded-corners (0px,0px, rgba(255,255,255,0));
+cursor:pointer;
+}
+
+.SideHandleRight{
+position:absolute;
+top: (@ContainerHeight - @HandleHeight)/2;
+left: 0;
+width: @HandleWidth;
+height: @HandleHeight;
+background: rgba(0,0,0,0.8);
+vertical-align: middle;
+.box-shadow (-1px, 0px, 3px, #000);
+.rounded-corners (0px,0px, rgba(255,255,255,0));
+cursor:pointer;
+}
+
+.MediaCount{
+position: relative;
+vertical-align: middle;
+text-align: center;
+.font(10px, Arial,White);
+}
+
+.MediaContainerLeft{
+position: absolute;
+top: 0;
+overflow-x:visible;
+overflow-y: auto;
+height: @ContainerHeight;
+width: @ContainerWidth - @HandleWidth;
+background: rgba(0,0,0,0.8);
+.rounded-corners (1px,1px, rgba(255,255,255,0));
+}
+
+.MediaContainerRight{
+position: absolute;
+top: 0;
+right : 0;
+overflow-x:visible;
+overflow-y: auto;
+height: @ContainerHeight;
+width: @ContainerWidth - @HandleWidth;
+background: rgba(0,0,0,0.8);
+}
+
+
+.trapzoid{
+.box-shadow (0px, 0px, 2px, #000);
+.rounded-corners (1px,1px, rgba(255,255,255,1));
+border-bottom: 40px solid rgba(0,0,0,0.8);
+border-left: 200px solid transparent;
+border-right: 80px solid transparent;
+height: 0;	
+width: 400px;
+transform-origin: 0 0;
+-webkit-transform: rotate(90deg);
+-moz-transform: rotate(90deg);
+-ms-transform: rotate(90deg);
+-o-transform: rotate(90deg);
+left:0;
+}

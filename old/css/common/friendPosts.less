@@ -1,0 +1,64 @@
+﻿@import "common.less";
+
+@ModalWidth: 400px;
+@BorderColor: rgba(255,255,255,0.6);
+@FontColor: white;
+
+
+.modalWindow{
+	background: black;
+	background-color: Black;
+	.rounded-corners(5px, 6px, @BorderColor);
+	.box-shadow(0px, 0px, 12px, rgba(0,0,0,0.7));
+	width: @ModalWidth;
+	
+}
+
+.PostTime{
+position: absolute;
+bottom: 3;
+left: 3 ;
+.postsSummaryText(100px, White, 8px, "Arial");
+}
+
+.FriendPostsContainer{
+background-color: transparent;
+background: transparent;
+width: @ModalWidth - (@Margin*2);
+margin:@Margin;
+
+}
+
+
+.postContainer{
+ margin:@Margin;
+ background:rgba(0,0,0, 0.6);
+}
+
+.postsContainer{
+border-radius:5px;
+border-color: White;
+border-width: 4px;
+background:rgba(255,255,255,0.1);
+ margin:@Margin;
+}
+
+.friendComment{
+position: relative;
+.font(10px, Arial, White);
+}
+
+.postImage{
+position: relative;
+float: left;
+border: @BorderColor;
+.rounded-corners(2px, 5px, White);
+margin: @Margin;
+}
+
+.origComment{
+position: relative;
+float:left;
+margin: @Margin;
+.font(10px, Arial, White);
+}

@@ -1,0 +1,6 @@
+
+addEventListener("start", onStart, false);
+
+function OnStart (e){
+
+}

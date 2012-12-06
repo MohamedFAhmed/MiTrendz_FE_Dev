@@ -1,0 +1,52 @@
+﻿@import "common.less";
+
+
+@ContainerHeight : 100%;
+@ContainerWidth : 275px;
+@MediaViewerInfoHeight: 20px;
+
+
+.MediaViewerContainer{
+position:fixed;
+left:0;
+top: 0;
+width: @ContainerWidth;
+height: @ContainerHeight;
+background: transparent;
+.rounded-corners (0px,0px, rgba(255,255,255,0));
+z-index: 50;
+}
+
+
+
+
+.MediaViewerInfo{
+position:absolute;
+bottom: 0;
+left: 0;
+width: @ContainerWidth;
+height: @MediaViewerInfoHeight;
+background: rgba(0,0,0,0.8);
+.box-shadow (-1px, 0px, 3px, #000);
+.rounded-corners (0px,0px, rgba(255,255,255,0));
+cursor:pointer;
+z-index: 100;
+}
+
+.MediaCount{
+position: relative;
+vertical-align: middle;
+text-align: center;
+.font(10px, Arial,White);
+}
+
+.MediaContainer{
+position: absolute;
+top: 0;
+overflow-x:visible;
+overflow-y: auto;
+height: @ContainerHeight;
+width: @ContainerWidth;
+background: rgba(0,0,0,0.8);
+.rounded-corners (1px,1px, rgba(255,255,255,0));
+}

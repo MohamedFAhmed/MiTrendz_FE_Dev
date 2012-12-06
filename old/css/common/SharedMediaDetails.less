@@ -1,0 +1,73 @@
+﻿@import "common.less";
+
+
+
+//These are just temp dimensions for design purposes. They will be changed at runtime according to image size.
+@PhotoWidth: 400px;
+@PhotoHeight: 500px;
+@containerHeight: @PhotoHeight + 200px;
+@ContainerWidth : @PhotoWidth + 20px;
+@InfoContHeight : 100px;
+
+
+.SMDLoadingIndicatorImg{
+position : absolute;
+top: @PhotoHeight/2;
+left: @PhotoWidth/2;
+}
+
+.SharedMediaDetailsContainer{
+position: absolute;
+overflow: auto;
+overflow-x:hidden;
+overflow-y: auto;
+}
+.PhotoContainer{
+position: relative;
+ }
+
+.SMDSharedImage, .SMDVideo{
+position: relative;
+left: 0px;
+top: 0px;
+overflow: hidden;
+}
+
+
+.SMDImgContainer{
+position: relative;
+height: @PhotoHeight;
+width: @PhotoWidth;
+}
+
+.SMDInfoContainer, .SocialActionsContainer{
+position: relative;
+margin-top: 5px;
+width: auto;
+background: rgba(0,0,0,0.3);
+background-color: rgba(0,0,0,0.3);
+height: auto;
+}
+
+.SMDSharedMediaSummary{
+position: absolute;
+
+left: @FriendImageHeight + @Margin*2;
+top: @Margin + 15;
+.postText(White, 10px, "Arial");
+}
+
+.SMDFriendName{
+position: absolute;
+left: @FriendImageWidth + @Margin*3;
+top: @Margin/2;
+.postText( White, 10px, "Arial");
+}
+
+.SMDSharedMediaTime{
+position: absolute;
+left: @Margin;
+bottom: 1;
+.postText(White, 8px, "Arial");
+text-emphasis: bold;
+}

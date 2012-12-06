@@ -1,0 +1,9 @@
+enyo.depends(
+	"posts.css",
+	"fullMediaView.js",
+	"fullLinkView.js",
+	"mediaQuickView.js",
+	"postsummary.js",
+	"fullpost.js",
+	"postslist.js"
+);

@@ -1,0 +1,163 @@
+﻿<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title></title>
+    <meta name="description" content="MiTrendz - Visualizing Trendz in your social network">
+    <meta name="author" content="MiTrendz - Creative team">
+    <link rel="stylesheet/less" type="text/css" href="../../css/common/skeleton.less" >
+    <link rel="stylesheet" href="../../css/desktop/jquery-ui-1.8.21.custom.css">
+    <meta name="viewport" content="width=device-width">
+    <script src="../../js/utils/utils.js"></script>
+    
+    <!--	<link rel="stylesheet/less"  href="../css/FriendPhoto.less" >
+        	<link rel="stylesheet/less"  href="../css/SharedMedia.less">
+        	<script type="text/javascript" charset="utf-8" src="http://localhost:58888/_appMobi/appmobi.js"></script> 
+        	<script type="text/javascript" charset="utf-8" src="http://localhost:58888/_appMobi/xhr.js"></script>
+        	
+        -->
+        
+        <!--    <script type="text/javascript" charset="utf-8" src="http://localhost:58888/_appMobi/appmobi.js"></script> -->
+    <script src="../../js/libs/common/less-1.3.0.min.js" type="text/javascript"></script>
+    <script src="../../js/libs/common/modernizr-2.5.3-respond-1.1.0.min.js"></script>
+    <script src="../../js/libs/common/kinetic-v3.9.6.js"></script>
+    <script src="../../js/libs/jquery/desktop/jquery-1.7.2.min.js"></script>
+    <!--<script src="../../js/libs/jquery/mobile/jquery.mobile-1.1.0.min.js"></script>
+    <script src="../../js/libs/jquery/mobile/jquery.doubletap.js"></script>-->
+    <script src="../../js/libs/jquery/jquery.condense.js"></script>
+    <script src="../../js/libs/jquery.lazyload(instance).js"></script>
+    <script src="../../js/libs/common/d3.js" type="text/javascript"></script>
+    <script src="../../js/libs/common/d3.layout.cloud.js" type="text/javascript"></script>
+    <script src="../../js/libs/common/mustache.js" type="text/javascript"></script>
+    <script src="../../js/controls/common/FriendPostsViewer.js" type="text/javascript"></script>
+    <script src="../../js/controls/common/SocialPost.js" type="text/javascript"></script>
+    <script src="../../js/controls/common/friendimg.js" type="text/javascript"></script>
+    <script src="../../js/controls/common/SharedMediaDetails.js" type="text/javascript"></script>
+    <script src="../../js/controls/common/PhotosViewer.js" type="text/javascript"></script>
+    <script src="../../js/libs/jquery/desktop/ui/jquery.bgiframe-2.1.2.js"></script>
+    <script src="../../js/libs/jquery/desktop/ui/jquery.ui.core.min.js"></script>
+    <script src="../../js/libs/jquery/desktop/ui/jquery.ui.widget.min.js"></script>
+    <script src="../../js/libs/jquery/desktop/ui/jquery.ui.mouse.min.js"></script>
+    <script src="../../js/libs/jquery/desktop/ui/jquery.ui.draggable.min.js"></script>
+    <script src="../../js/libs/jquery/desktop/ui/jquery.ui.position.min.js"></script>
+    <script src="../../js/libs/jquery/desktop/ui/jquery.ui.resizable.min.js"></script>
+    <script src="../../js/libs/jquery/desktop/ui/jquery.ui.dialog.min.js"></script>
+    <!--<script src="../../js/AppMobi/InitAppMobi.js" type="text/javascript"></script>-->
+    <script src="../../js/controls/common/cloud.js"></script>
+    <script src="../../js/controls/common/main.js"></script>
+    <script type="text/javascript">
+        $(document).ready(InitializeApp);
+        
+    </script>
+</head>
+<body>
+    <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+    <div class="container">
+        <div class="sixteen columns">
+            
+            <div id="SettingsRow">
+            <p style="position: fixed; right:5px; top:5px; font-family: Arial; font-size:5; margin:5px;">Revision 26 </p>
+            <p style="position: absolute; left:50%; font-family: HaettenschweilerRegular; margin:5px; font-size:30px;">MiTrendz</p>
+           <svg id="SettingsIcon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+
+	 width="30px" height="30px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
+
+<path id="gear-2-icon" fill="rgb(255,255,255)" d="M311.546,256c0,30.628-24.918,55.546-55.546,55.546c-30.629,0-55.548-24.918-55.548-55.546
+
+	c0-30.629,24.919-55.547,55.548-55.547C286.628,200.453,311.546,225.371,311.546,256z M462,228.257v55.485l-29.963,10.655
+
+	c-11.449,4.071-20.643,12.796-25.297,24.021c-0.002,0.005-0.004,0.009-0.006,0.014c-4.653,11.218-4.328,23.908,0.886,34.877
+
+	l13.66,28.737l-39.234,39.234l-28.902-13.738c-10.884-5.174-23.451-5.491-34.578-0.863c-0.005,0.002-0.009,0.004-0.014,0.006
+
+	c-11.308,4.701-20.113,13.987-24.216,25.525L283.741,462h-55.484l-10.663-29.984c-4.068-11.438-12.784-20.621-23.998-25.271
+
+	c-0.004-0.002-0.009-0.004-0.014-0.006c-11.229-4.657-23.93-4.33-34.909,0.889l-28.721,13.652l-39.234-39.234l13.654-28.723
+
+	c5.222-10.985,5.548-23.67,0.888-34.906c-0.002-0.004-0.003-0.009-0.005-0.014c-4.647-11.206-13.844-19.935-25.274-24L50,283.742
+
+	v-55.485l29.982-10.662c11.438-4.067,20.622-12.784,25.271-23.998c0.002-0.004,0.004-0.009,0.006-0.013
+
+	c4.656-11.229,4.33-23.931-0.889-34.91l-13.653-28.721l39.234-39.234l28.723,13.653c10.986,5.222,23.67,5.548,34.905,0.889
+
+	c0.005-0.001,0.009-0.003,0.014-0.005c11.207-4.646,19.936-13.843,24.001-25.274L228.257,50h55.484l10.663,29.982
+
+	c4.067,11.438,12.785,20.623,24,25.273c0.004,0.002,0.009,0.003,0.014,0.005c11.229,4.657,23.93,4.33,34.908-0.889l28.72-13.652
+
+	l39.234,39.234l-13.653,28.724c-5.222,10.985-5.548,23.668-0.889,34.903c0.002,0.004,0.004,0.009,0.006,0.013
+
+	c4.646,11.208,13.844,19.937,25.274,24.001L462,228.257z M351.546,256c0-52.685-42.861-95.547-95.546-95.547
+
+	c-52.686,0-95.548,42.862-95.548,95.547s42.862,95.546,95.548,95.546C308.685,351.546,351.546,308.685,351.546,256z"/>
+
+</svg>
+            </div>
+        </div>
+            <div class="sixteen columns">
+                <div id="CloudsAccess">
+                <div class="cloudName">Home</div>
+                <div class="cloudName">
+                <svg id="#AddCloudIcon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+
+	 width="30px" height="30px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
+
+<path id="plus-5-icon" fill="rgb(255,255,255)" d="M363.68,288.439h-76.24v76.238h-58.877v-76.238h-76.24v-58.877h76.24v-76.24h58.877v76.24h76.24V288.439z
+
+	 M462,256c0,113.771-92.229,206-206,206S50,369.771,50,256S142.229,50,256,50S462,142.229,462,256z M422,256
+
+	c0-91.755-74.258-166-166-166c-91.755,0-166,74.259-166,166c0,91.755,74.258,166,166,166C347.755,422,422,347.741,422,256z"/>
+
+</svg>
+                
+                </div>
+            </div>
+        </div>
+                
+        <div class="sixteen columns">
+        
+            <div id="CloudContainer"></div>
+        </div>
+           <div class="sixteen columns">
+            <div id="CloudInfo">Cloud details go here</div>
+        </div>
+
+ 
+             
+    <!-- <div class="one-third column" id="PhotosContainer">
+                 <div id="PhotosViewer">
+                 </div>
+             </div>-->
+        <div id="PhotosSideViewer" class="SideMediaViewContainerLeft">
+            
+            <div class="SideHandleLeft">
+                <img class="sideIcon" src="../../imgs/common/photo_icon.png" />
+                <p class="MediaCount"></p>
+                 
+                
+            </div>
+            <div id="PhotosContainer" class="MediaContainerLeft">
+                <div id="PhotosViewer" class="MediaViewer">
+                </div>
+            </div>
+        </div>
+        <div id="VideosSideViewer" class="SideMediaViewContainerRight">
+            
+            <div class="SideHandleRight">
+                <img class="sideIcon" src="../../imgs/common/video_icon.png" />
+                <p class="MediaCount"></p>
+                
+            </div>
+              <div id="VideosContainer" class="MediaContainerRight">
+            <div id="VideosViewer" class="MediaViewer">
+            </div>
+        </div>
+        </div>
+       
+       </div>       
+ 
+</body>
+</html>
