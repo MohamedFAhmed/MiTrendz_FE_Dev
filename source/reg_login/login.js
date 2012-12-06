@@ -6,7 +6,7 @@ enyo.kind({
 	classes:"registrationPage",
 	components: [
 	{kind : "enyo.Scroller", horizontal: "hidden", vertical: "default", style:"width:100%; height:100%; text-align:center;", components : [	
-		{kind: "FittableRows", fit: true, style :"height:100%; background:black; text-align:center;", components:[
+		{kind: "FittableRows", fit: true, style :"height:100%; background:blue; text-align:center;", components:[
 				{kind: "onyx.TooltipDecorator", style: "margin: 3px;",components: [
 					{kind: "onyx.IconButton",
 						src: "assets/back.png", style: "", ontap: "goBackTapped"},

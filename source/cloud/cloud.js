@@ -205,11 +205,12 @@ enyo.kind({
 		if (this.cloudInfo != null){
 		
 			
-			var scrollBounds = this.$.cloudScroller.getScrollBounds();
-			this.$.cloudScroller.scrollTo(scrollBounds.maxLeft/2, 0);
+			
 			this.draw();
 			this.calcTrends();
 			this.viewRendered = true;
+			var scrollBounds = this.$.cloudScroller.getScrollBounds();
+			this.$.cloudScroller.scrollTo(scrollBounds.maxLeft/2, 0);
 		}
 		
 		
@@ -261,7 +262,7 @@ enyo.kind({
 		this.cloudTags = tags;
 		this.getFontSize(tags);
 		this.canvasWidth = parseInt(this.$.mainCloudCanvas.getComputedStyleValue('width'));
-		this.canvasHeight = parseInt(this.$.mainCloudCanvas.getComputedStyleValue('height'));
+		this.canvasHeight = 400; //parseInt(this.$.mainCloudCanvas.getComputedStyleValue('height'));
 		this.width = this.canvasWidth;
 		this.height = this.canvasHeight;
 		
