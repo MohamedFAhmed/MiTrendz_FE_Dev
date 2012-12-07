@@ -37,7 +37,7 @@ enyo.kind({
 	components : [
 		{kind : "Control", style: "height: 100%; width: 100%; margin: 0px;", components : [
 			{kind : "FittableRows", fit: true, style : "height:100%;", classes:"", components : [
-				{kind: "onyx.Toolbar",classes:"onyx-menu-toolbar", components: [
+				{kind: "onyx.Toolbar",classes:"onyx-menu-toolbar", style:"height:50px; background: rgba(0,0,0,1);", components: [
 					{kind: "FittableColumns", style:"width:100%", components: [
 						{kind: "onyx.TooltipDecorator", style: "margin: 3px;",components: [
 								{kind: "onyx.IconButton",

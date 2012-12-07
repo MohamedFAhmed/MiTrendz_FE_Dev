@@ -5,6 +5,7 @@ enyo.depends(
 	"$lib/kinetic",
 	"$lib/Masonry",
 	"$lib/extra/phonegap",
+	"$lib/tagcanvas/",
 	"reg_login",
 	"utils/",
 	"social/",

@@ -16,7 +16,7 @@ enyo.kind({
 	components: [
 	{kind: "onyx.TooltipDecorator", style : "display:inline;" , components: [
 		{name: "trendPhoto", classes:"trendingPhoto", kind : "Image", src:"assets/icons/trend_image_loader.gif"},
-		{name: "postsCount" , kind: "onyx.Tooltip", content: ""}
+		//{name: "postsCount" , kind: "onyx.Tooltip", content: ""}
 	]}
 	],
 	    constructor: function() {
@@ -41,7 +41,7 @@ enyo.kind({
 		if (this.photoObject.hasOwnProperty("LinkThumpImage")){
 			this.$.trendPhoto.setSrc(this.photoObject.LinkThumpImage);
 		}
-		this.$.postsCount.setContent("Total Likes: " + this.photoObject.LikesCount);
+		//this.$.postsCount.setContent("Total Likes: " + this.photoObject.LikesCount);
 	},
 	trendingPhotoTapped : function(){
 		var signalEvent = new Object();

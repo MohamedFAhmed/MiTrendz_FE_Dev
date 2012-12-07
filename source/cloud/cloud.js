@@ -17,13 +17,13 @@ enyo.kind({
     HighlightedKws : [],
     canvasWidth : 600,
     canvasHeight : 600,
-    padding : 10,
-	fontSizeBuffer : 15,
+    padding : 1,
+	fontSizeBuffer : 4,
 	trendsWorkerThread : null,
 	viewRendered : false,
 	colorsTheme : ['#4D4200','#433B08','#3F3600','#796A0F','#796C1B','#003911', '#063213','#002F0E','#0D6A29','#186A31','#4D0A00','#431008','#3F0900', '#791E0F','#79281B','#110034', '#12062E', '#0E002B', '#290D67', '#301767'],
-    colorsTheme1 : ['#CA860A', '#C0910A', '#B35E00', '#CA530A', '#C0340A'],
-    colorsTheme2 : ['#B99CB3', '#B499AF', '#B38FAC', '#F8E2F4', '#F8F1F7'],
+    colorsTheme1 : ['#000000', '#00051C', '#00072A', '#00020E', '#000624'],
+    colorsTheme2 : ['#2B0000', '#FF5800', '#CB0300', '#CB0300', '#1E2700'],
 	d3Vis : null,
     published :{
 		curView : null,
@@ -36,25 +36,29 @@ enyo.kind({
 	},
 	components : [
 	{name: "mainCloudView", kind: "FittableRows", style:"height:100%; width:100%;", components: [
-		{kind: "Scroller", classes:"onyx-toolbar", touchOverscroll:true, touch:true, vertical:"hidden", style:"margin:0px; height:60px; padding: 5px;", thumb:false, components: [
-			{classes: "onyx-toolbar-inline onyx-menu-toolbar", style: "white-space: nowrap; height:50px; margin-left: 5px; margin-right: 30px; padding:0px;", components: [
+		//{kind: "Scroller", classes:"onyx-toolbar", touchOverscroll:true, touch:true, vertical:"hidden", style:"margin:0px; height:60px; padding: 5px; ", thumb:false, components: [
+			{classes: "onyx-toolbar-inline onyx-menu-toolbar", style: "white-space: nowrap; height:50px;padding:0px; background: rgba(0,0,0,1);", components: [
 			
 				{kind: "onyx.TooltipDecorator", style: "vertical-align: middle;", components: [
 					{kind: "onyx.IconButton",src: "assets/settings.png", ontap: "settingsTapped"},
 					{kind: "onyx.Tooltip", content: "Change Settings"}
 				]},
-				{kind: "Group", name:"cloudsNames", onActivate:"buttonActivated", classes: "onyx-sample-tools group", defaultKind: "Control", highlander: true, style: "white-space: nowrap; height:50px; margin 0px; padding:0px;", components: [
-					{content: "Home", active: true, classes: "cloudName", style: "", ontap : "cloudChangeTapped"},
-					{content: "Family", active: false,  classes: "cloudName", ontap : "cloudChangeTapped"},
-					{content: "News" , active: false,  classes: "cloudName", ontap : "cloudChangeTapped"}
+				{kind: "Control", fit: true, style:" width:100%; height: 40px; text-align:center;", components: [
+//						{name: "friendPic", kind:"Image", classes: "smallFriendPic", src :"assets/icons/frnd_pic_loader.gif",  style: ""},
+						{name: "friendName", content:"Venture Beat", style: "display: inline; vertical-align: middle; white-space: nowrap; font-size: 25px; color:rgba(255,255,255,0.7); margin-left: 10px;"}
 				]},
-				{kind: "onyx.TooltipDecorator", style: "margin-left: 30px; margin-top:auto; margin-bottom:auto;",components: [
-						{kind: "onyx.IconButton", src: "assets/add.png", style: "margin-left: 30px; margin: 0px;", ontap: "addCloudTapped"},
-						{kind: "onyx.Tooltip", content: "Change Settings"}
-				]},
-				{kind : "MiTrendz.AddCloud", name : "addCloudPopup", onCloudAdded : "cloudAdded"}
-			]}
-		]},
+				// {kind: "Group", name:"cloudsNames", onActivate:"buttonActivated", classes: "onyx-sample-tools group", defaultKind: "Control", highlander: true, style: "white-space: nowrap; height:50px; margin 0px; padding:0px;", components: [
+					// {content: "Home", active: true, classes: "cloudName", style: "", ontap : "cloudChangeTapped"},
+					// {content: "Family", active: false,  classes: "cloudName", ontap : "cloudChangeTapped"},
+					// {content: "News" , active: false,  classes: "cloudName", ontap : "cloudChangeTapped"}
+				// ]},
+				// {kind: "onyx.TooltipDecorator", style: "margin-left: 30px; margin-top:auto; margin-bottom:auto;",components: [
+						// {kind: "onyx.IconButton", src: "assets/add.png", style: "margin-left: 30px; margin: 0px;", ontap: "addCloudTapped"},
+						// {kind: "onyx.Tooltip", content: "Change Settings"}
+				// ]},
+				// {kind : "MiTrendz.AddCloud", name : "addCloudPopup", onCloudAdded : "cloudAdded"}
+			]},
+		//]},
 		// {kind: "FittableColumns", name:"cloudActionBar", classes: "onyx-menu-toolbar cloudActionGroup", defaultKind: "onyx.IconButton", style:"text-align: right;", components: [
 			// {kind: "onyx.TooltipDecorator", style:"margin:5px;", components: [
 					// {kind: "onyx.IconButton", src: "assets/edit.png", ontap: "editTapped"},
@@ -72,13 +76,13 @@ enyo.kind({
 			{kind: "Control", tag:"div", classes:"rightSideGradient"},
 			{kind: "Control", tag:"div", classes:"leftSideGradient"},
 		]},
-		{name: "trendingBar", kind: "Scroller",   vertical:"hidden", horizontal:"auto", classes: "trendingBar", components: [
+		{name: "trendingBar", kind: "Scroller",   vertical:"hidden", horizontal:"auto", classes: "trendingBar", style: "background: rgba(0,0,0,1);", components: [
 			{kind:"FittableColumns", style :"white-space: nowrap; display:inline; height: 100px; width:500px;", noStretch:true, components: [
 				{kind :"Control", style: "width:100px;" , components :[
 					{name:"totalShared", content: "", noStretch:true, style : "font-size:40px; color:white; text-align:center;  height: 80px; line-height:100px;"},
 					{content: "Shared Posts\n since yesterday", noStretch:true, style : "font-size:12px; text-align: center; height:20px; color: rgba(255,255,255,0.6);"},
 						
-						
+	
 				]},
 				
 				{name: "trendingVideos" , kind:"FittableRows", style:"margin-left: 20px; width: 250px;",   components: [
@@ -86,9 +90,13 @@ enyo.kind({
 						{content: "Videos",  classes : "trendingTitle"},
 						{name: "videosCount", content: "",  style: "margin-left: 5px;", classes : "trendingTitle"}
 					]},
-					{kind: "Scroller", classes:"", touchOverscroll:true, touch:true, vertical:"hidden", style:"margin:0px;  padding: 0px;", thumb:false, components : [
-							{name: "videosList" , kind: "FittableColumns", style:"white-space: noWrap;", components: [
-						]}
+					{name:"videocrollContainer", kind:"Control" ,  style :"position:relative; ", components: [
+						{kind: "Scroller", classes:"", touchOverscroll:true, touch:true, vertical:"hidden", style:"margin:0px;  padding: 0px;", thumb:false, components : [
+								{name: "videosList" , kind: "FittableColumns", style:"white-space: noWrap;", components: [
+							]}
+						]},
+						{kind: "Control", tag:"div", classes:"rightSideGradientBlack"},
+						{kind: "Control", tag:"div", classes:"leftSideGradientBlack"},
 					]}
 				]},
 				{kind:"FittableRows", style:"margin-left: 30px; width: 250px;", components: [
@@ -96,11 +104,14 @@ enyo.kind({
 						{content: "Images",  classes : "trendingTitle"},
 						{name: "photosCount", content: "",  style: "margin-left: 5px;", classes : "trendingTitle"}
 					]},
-					
+					{name:"photosScrollContainer", kind:"Control" ,  style :"position:relative; ", components: [
 					{ kind: "Scroller", classes:"", touchOverscroll:true, touch:true, vertical:"hidden", style:"margin:0px;  padding: 0px; -webkit-border-left-image: -webkit-gradient(linear, left right from(#00abeb), to(#fff)); -webkit-border-left-width : 5px;", thumb:false, components : [
 							{name: "photosList", kind: "FittableColumns", style:"white-space: noWrap;", components: [							
 						]}
-					]}
+					]},
+						{kind: "Control", tag:"div", classes:"rightSideGradientBlack"},
+						{kind: "Control", tag:"div", classes:"leftSideGradientBlack"},
+					]},
 						
 				]},
 				//]},
@@ -109,26 +120,30 @@ enyo.kind({
 						{content: "Contributing Friends",  classes : "trendingTitle"},
 						{name: "friendsCount", content: "",  style: "margin-left: 5px;", classes : "trendingTitle"}
 					]},
-					{kind: "Scroller", classes:"", touchOverscroll:true, touch:true, vertical:"hidden", style:"margin:0px;  padding: 0px;", thumb:false, components : [
-							{name: "friendsList" , kind: "FittableColumns", style:"white-space: noWrap;", components: [
-							// {kind:"FittableColumns", noStretch:true, components : [
-								// {name: "firstFriend", kind:"Image" , src: "assets/mockups/friend_pic1.jpg", classes: "topFriendPicture" , ontap : "friendPictureTapped"},
-								// {name: "secondFriend", kind:"Image" , src: "assets/mockups/friend_pic2.jpg", classes: "topFriendPicture" , ontap : "friendPictureTapped"}
-							// ]}
-						]}
-					]}
+					{name:"friendsScrollContainer", kind:"Control" ,  style :"position:relative; ", components: [
+						{kind: "Scroller", classes:"", touchOverscroll:true, touch:true, vertical:"hidden", style:"margin:0px;  padding: 0px;", thumb:false, components : [
+								{name: "friendsList" , kind: "FittableColumns", style:"white-space: noWrap;", components: [
+								// {kind:"FittableColumns", noStretch:true, components : [
+									// {name: "firstFriend", kind:"Image" , src: "assets/mockups/friend_pic1.jpg", classes: "topFriendPicture" , ontap : "friendPictureTapped"},
+									// {name: "secondFriend", kind:"Image" , src: "assets/mockups/friend_pic2.jpg", classes: "topFriendPicture" , ontap : "friendPictureTapped"}
+								// ]}
+							]}
+						]},
+						{kind: "Control", tag:"div", classes:"rightSideGradientBlack"},
+						{kind: "Control", tag:"div", classes:"leftSideGradientBlack"},
+					]},
 				]},
 			]},
 		]}
 	]},
 	{kind : "MiTrendz.Settings", name : "settingsPopup"},
-	{name: "cloudDeleteConfirm", kind: "enyo.Popup", style:"background: rgba(0,0,0,0.95); border-radius: 5px; padding: 20px; text-align: center;" ,autoDismiss: false, centered: true, floating: true, scrim: false, components: [
-				{content: "Are you sure want to delete this cloud?", style :"color:white; font-size: 30px;"},
-				{tag: "br"},
-				{kind: "onyx.IconButton", src: "assets/accept.png", style:"margin: 5px; margin-right: 20px;", ontap: "confirmCloudDelete"},
-					{kind: "onyx.IconButton", src: "assets/cancel.png", style:"margin: 5px; margin-left: 20px;", ontap: "cancelCloudDelete"}
-	]},	
-	{kind : "MiTrendz.AddCloud", name : "modifyCloudPopup"},
+	// {name: "cloudDeleteConfirm", kind: "enyo.Popup", style:"background: rgba(0,0,0,0.95); border-radius: 5px; padding: 20px; text-align: center;" ,autoDismiss: false, centered: true, floating: true, scrim: false, components: [
+				// {content: "Are you sure want to delete this cloud?", style :"color:white; font-size: 30px;"},
+				// {tag: "br"},
+				// {kind: "onyx.IconButton", src: "assets/accept.png", style:"margin: 5px; margin-right: 20px;", ontap: "confirmCloudDelete"},
+					// {kind: "onyx.IconButton", src: "assets/cancel.png", style:"margin: 5px; margin-left: 20px;", ontap: "cancelCloudDelete"}
+	// ]},	
+	// {kind : "MiTrendz.AddCloud", name : "modifyCloudPopup"},
 	{name: "cloudLoadingSpinner", kind: "enyo.Popup", classes:"loadingPopup" ,autoDismiss: false, centered: true, floating: true, scrim: false, components: [
 		{kind: "onyx.Spinner"},
 		{content : "Loading", style:"color: white; font-size: 30px; text-align: center;"}
@@ -174,6 +189,7 @@ enyo.kind({
 		//this.cloudInfo = cloudData;
 		if (inData != null){
 			this.getCloud(inData.userId);
+			//this.userSettings = 
 			
 		}
 		this.$.cloudLoadingSpinner.show();
@@ -262,7 +278,10 @@ enyo.kind({
 		this.cloudTags = tags;
 		this.getFontSize(tags);
 		this.canvasWidth = parseInt(this.$.mainCloudCanvas.getComputedStyleValue('width'));
-		this.canvasHeight = 400; //parseInt(this.$.mainCloudCanvas.getComputedStyleValue('height'));
+		this.canvasHeight = parseInt(this.$.mainCloudCanvas.getComputedStyleValue('height'));
+		if (this.canvasHeight == 0){ //in embedded mode, it fails to get actual height
+			this.canvasHeight = 598;
+		}
 		this.width = this.canvasWidth;
 		this.height = this.canvasHeight;
 		
@@ -288,7 +307,7 @@ enyo.kind({
 		
         d3.layout.cloud(this).size([this.canvasWidth, this.canvasHeight])
                 .words(tags.map(function (tag) {
-                    return { text: tag.Keyword, size: tag.FontSize}; //10 + Math.random() * 20 
+                    return { text: tag.Keyword.toUpperCase(), size: tag.FontSize}; //10 + Math.random() * 20 
                 }))                
                 .font(this.fontName)
                 .fontSize(function (d) { return d.size ; })
@@ -373,9 +392,9 @@ enyo.kind({
 	},
 	d3visualizeOneTag : function(tag, objref){
 	  var text = objref.d3Vis.append("text");
-	  var color = objref.colorsTheme[~~(MiTrendz.Utils.Numbers.randomXToY(0, objref.colorsTheme.length-1))]; //'black';
+	  var color = objref.colorsTheme2[~~(MiTrendz.Utils.Numbers.randomXToY(0, objref.colorsTheme.length-1))]; //'black';
 	  text.transition()
-		  .duration(300)
+		  .duration(0)
 		  .attr("transform", "translate(" + [tag.x, tag.y] + ")rotate(" + tag.rotate + ")")
 		  .style("font-size", tag.size + "px");
 	  text.attr("text-anchor", "middle")
@@ -386,11 +405,12 @@ enyo.kind({
 			})
 		  .style("opacity", 1e-6)
 		.transition()
-		  .duration(400)
+		  .duration(800)
 		  .style("opacity", 1);
 	  text.style("font-family", tag.font)
 		  .style("fill", color)
-		  .text(tag.text);
+		  //.style("text-shadow", "0 0 0px #000")
+		  .text(tag.text.toUpperCase());
 		objref.$.cloudLoadingSpinner.hide();
 	},
 	visualizeTagsCanvas : function (Tags, objref){

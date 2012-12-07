@@ -59,9 +59,9 @@ enyo.kind({
 	},
 	initializeSettings : function(){
 		MiTrendz.Utils.Storage.set("settings.cloud.fontName", "HaettenschweilerRegular");
-		MiTrendz.Utils.Storage.set("settings.cloud.minFontSize", 10);
+		MiTrendz.Utils.Storage.set("settings.cloud.minFontSize", 5);
 		MiTrendz.Utils.Storage.set("settings.cloud.fontSizeStep", 10);
-		MiTrendz.Utils.Storage.set("settings.subcloud.minFontSize", 10);
+		MiTrendz.Utils.Storage.set("settings.subcloud.minFontSize", 8);
 		MiTrendz.Utils.Storage.set("settings.subcloud.fontSizeStep", 10);
 	},
     statics: {

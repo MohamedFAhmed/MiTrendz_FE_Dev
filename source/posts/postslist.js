@@ -27,7 +27,7 @@ enyo.kind({
 					]}
 				]},
 			]},
-			{name:"postsScroller", kind:"Scroller",  vertical:"auto", horizontal: "hidden", strategyKind: "TouchScrollStrategy", classes: "postsScroller",   components:[
+			{name:"postsScroller", kind:"Scroller",  vertical:"auto", horizontal: "hidden", strategyKind: "TouchScrollStrategy", classes: "postsScroller",   onScroll: "onPostsListScroll", components:[
 				{name: "postsList", kind: "com.Pre101.Masonry", style :"width:100%; height :100%; " , components :[
 					{name: "waitSpinner", style:"background:transparent; border-radius:5px; padding:15px; position: absolute; top:50%; left: 50%; z-index: 1; width:100%;", components: [
 						//{kind :"Image" , src : "assets/ajax-loader.gif"}
@@ -49,6 +49,9 @@ enyo.kind({
 		// //this.$.cloudLoadingSpinner.show();
        
     // },
+	onPostsListScroll :function (inSender, inEvent){
+		var i=0;
+	},
 	 render: function(){
 		 this.inherited(arguments);
 		 
